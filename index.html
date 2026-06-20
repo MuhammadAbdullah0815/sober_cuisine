@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sober Cuisine — BBQ, Desi & Fast Food | Faisalabad</title>
+  <link rel="icon" type="image/png" href="picturee.png" />
+  <link rel="apple-touch-icon" href="picturee.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body { font-family: 'Poppins', sans-serif; background: #1a0030; color: #fff; }
+   
+html, 
+body{
+  width:100%;
+  overflow-x:hidden;
+}
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+
+    :root {
+      --purple-deep:  #1a0030;
+      --purple-mid:   #2d0057;
+      --purple-glass: rgba(75,0,130,0.45);
+      --accent:       #FFA500;
+      --accent-glow:  rgba(255,165,0,0.22);
+      --accent-dark:  #cc8400;
+      --white:        #ffffff;
+      --w60:          rgba(255,255,255,0.60);
+      --w20:          rgba(255,255,255,0.08);
+      --radius:       14px;
+      --radius-lg:    22px;
+    }
+
+    /* ── REVEAL ── */
+    .reveal        { opacity:0; transform:translateY(40px);   transition:opacity .65s ease,transform .65s ease; }
+    .reveal-left   { opacity:0; transform:translateX(-50px);  transition:opacity .65s ease,transform .65s ease; }
+    .reveal-right  { opacity:0; transform:translateX( 50px);  transition:opacity .65s ease,transform .65s ease; }
+    .reveal.visible,.reveal-left.visible,.reveal-right.visible { opacity:1; transform:none; }
+
+    /* ── NAVBAR ── */
+    #navbar {
+      position:fixed; top:0; left:0; right:0; z-index:9000;
+      padding:0 5vw; height:68px;
+      display:flex; align-items:center; justify-content:space-between;
+      transition:background .35s,box-shadow .35s;
+      overflow:visible;
+    }
+    #navbar.scrolled { background:rgba(26,0,48,.93); backdrop-filter:blur(14px); box-shadow:0 2px 24px rgba(0,0,0,.45); }
+    .nav-logo { display:flex; align-items:center; text-decoration:none; }
+    .nav-logo img { height: 90px; width:auto; object-fit:contain; display:block; filter:drop-shadow(0 2px 6px rgba(0,0,0,.4)); }
+    @media(max-width:480px){ .nav-logo img { height:34px; } }
+    .nav-links { display:flex; gap:2rem; list-style:none; }
+    .nav-links a { font-size:.88rem; font-weight:500; color:var(--w60); transition:color .2s; }
+    .nav-links a:hover { color:var(--accent); }
+    .nav-toggle { display:none; flex-direction:column; gap:5px; background:none; border:none; cursor:pointer; padding:4px; position:relative; z-index:9002; }
+    .nav-toggle span { display:block; width:24px; height:2px; background:#fff; border-radius:2px; transition:transform .3s,opacity .3s; }
+    .nav-toggle.open span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
+    .nav-toggle.open span:nth-child(2) { opacity:0; }
+    .nav-toggle.open span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
+    @media(max-width:740px){
+      .nav-toggle{display:flex;}
+      .nav-links{position:fixed;top:68px;left:0;right:0;flex-direction:column;gap:0;background:#1a0030;backdrop-filter:blur(14px);padding:1.2rem 0 2rem;transform:translateY(-110%);transition:transform .35s ease;z-index:9001;pointer-events:none;visibility:hidden;}
+      .nav-links.open{transform:translateY(0);pointer-events:auto;visibility:visible;}
+      .nav-links li{border-bottom:1px solid var(--w20);}
+      .nav-links a{display:block;padding:.85rem 5vw;font-size:1rem;color:#fff;}
+    }
+
+    /* ── HERO ── */
+    #hero{
+  min-height:auto;
+  padding:120px 5vw 80px;
+  position:relative;
+  overflow:hidden;
+  isolation:isolate;
+}
+    #hero-bg {
+      position:absolute; inset:0;
+      background-image:url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=1600&q=80');
+      background-size:cover; background-position:center;
+      filter:brightness(.35) saturate(1.2);
+      transform:scale(1.04);
+      transition:transform 8s ease;
+      pointer-events:none;
+    }
+    #hero-bg.loaded { transform:scale(1); }
+    #hero::after {
+      content:''; position:absolute; inset:0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 110%, rgba(255,165,0,.28) 0%,transparent 60%),
+        linear-gradient(180deg, rgba(26,0,48,.5) 0%, rgba(26,0,48,.2) 40%, rgba(26,0,48,.7) 100%);
+      pointer-events:none;
+    }
+    #hero::before {
+      content:''; position:absolute; inset:0; z-index:1;
+      background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+      background-size:52px 52px;
+      pointer-events:none;
+    }
+    .ember { position:absolute; border-radius:50%; background:var(--accent); opacity:0; animation:float-up linear infinite; pointer-events:none; z-index:2; }
+    @keyframes float-up { 0%{transform:translateY(0) scale(1);opacity:.8;} 100%{transform:translateY(-110vh) scale(0);opacity:0;} }
+    .hero-content { position:relative; z-index:3; max-width:820px; }
+    .hero-badge {
+      display:inline-block; background:var(--accent-glow); border:1px solid rgba(255,165,0,.4);
+      color:var(--accent); font-size:.78rem; font-weight:600; letter-spacing:2px;
+      text-transform:uppercase; padding:.38rem 1.1rem; border-radius:999px; margin-bottom:1.4rem;
+    }
+    .hero-title { font-size:clamp(2.8rem,8vw,5.8rem); font-weight:900; line-height:1.04; letter-spacing:-1.5px; margin-bottom:1rem; }
+    .hero-title .accent { color:var(--accent); }
+    .hero-logo-wrap { display:flex; justify-content:center; align-items:center; margin:0 auto 1.2rem; }
+    .hero-logo-img {
+      width:min(75vw, 320px);
+       height:auto;
+      height: auto;
+      object-fit: contain;
+      display: block;
+      filter: drop-shadow(0 6px 32px rgba(0,0,0,.55)) drop-shadow(0 0 20px rgba(255,165,0,.2));
+    }
+    @media(max-width:480px){ .hero-logo-img { width: clamp(150px, 68vw, 260px); } }
+    .hero-tagline { font-size:clamp(.95rem,2.2vw,1.2rem); color:var(--w60); max-width:540px; margin:0 auto 2.5rem; line-height:1.75; }
+    .hero-ctas { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; }
+    .btn-primary {
+      display:inline-flex; align-items:center; gap:.5rem;
+      background:var(--accent); color:#1a0030; font-weight:700; font-size:.93rem;
+      padding:.85rem 2rem; border-radius:999px; border:none; cursor:pointer;
+      transition:background .2s,transform .2s,box-shadow .2s;
+      box-shadow:0 0 28px rgba(255,165,0,.4);
+    }
+    .btn-primary:hover { background:#ffb733; transform:translateY(-2px); box-shadow:0 6px 36px rgba(255,165,0,.6); }
+    .btn-outline {
+      display:inline-flex; align-items:center; gap:.5rem;
+      background:transparent; color:#fff; font-weight:600; font-size:.93rem;
+      padding:.85rem 2rem; border-radius:999px; border:1.5px solid rgba(255,255,255,.35);
+      cursor:pointer; transition:border-color .2s,color .2s,transform .2s;
+    }
+    .btn-outline:hover { border-color:var(--accent); color:var(--accent); transform:translateY(-2px); }
+    .hero-scroll-hint {
+      position:absolute; bottom:2rem; left:50%; transform:translateX(-50%);
+      display:flex; flex-direction:column; align-items:center; gap:.4rem;
+      color:var(--w60); font-size:.72rem; letter-spacing:1.5px; text-transform:uppercase;
+      animation:bounce 2.2s ease infinite; z-index:3;
+    }
+    @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0);} 50%{transform:translateX(-50%) translateY(8px);} }
+
+    /* ── SHARED SECTION ── */
+    section { padding:90px 5vw; }
+    .section-label { display:inline-block; font-size:.72rem; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--accent); margin-bottom:.7rem; }
+    .section-title { font-size:clamp(1.7rem,4vw,2.6rem); font-weight:800; line-height:1.15; letter-spacing:-.5px; margin-bottom:.9rem; }
+    .section-subtitle { color:var(--w60); font-size:.96rem; line-height:1.75; max-width:560px; }
+    .divider { width:48px; height:3px; background:var(--accent); border-radius:3px; margin:1rem 0 2rem; }
+    .max-w { max-width:1200px; margin:0 auto; }
+
+    /* ── ABOUT ── */
+    #about { background:var(--purple-mid); position:relative; overflow:hidden; }
+    #about::after { content:''; position:absolute; right:-100px; top:-80px; width:400px; height:400px; border-radius:50%; background:radial-gradient(circle,rgba(255,165,0,.07),transparent 70%); pointer-events:none; }
+    .about-inner { max-width:1200px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:center; }
+    .about-img-wrap { position:relative; border-radius:var(--radius-lg); overflow:hidden; aspect-ratio:4/3; }
+    .about-img-wrap img { width:100%; height:100%; object-fit:cover; }
+    .about-img-wrap::after { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(75,0,130,.4),transparent); }
+    .about-img-badge {
+      position:absolute; bottom:1.2rem; left:1.2rem; z-index:2;
+      background:rgba(26,0,48,.85); backdrop-filter:blur(8px);
+      border:1px solid rgba(255,165,0,.35); border-radius:12px;
+      padding:.7rem 1.1rem; font-size:.82rem; font-weight:600; color:var(--accent);
+    }
+    .about-highlight { font-size:1rem; color:var(--accent); font-weight:600; margin-top:1.4rem; line-height:1.6; }
+    .about-stats { display:grid; grid-template-columns:repeat(2,1fr); gap:1rem; margin-top:2rem; }
+    .stat-card { background:var(--w20); border:1px solid rgba(255,255,255,.1); border-radius:var(--radius); padding:1.4rem 1.2rem; text-align:center; transition:border-color .25s,transform .25s; }
+    .stat-card:hover { border-color:var(--accent); transform:translateY(-4px); }
+    .stat-number { font-size:2rem; font-weight:900; color:var(--accent); }
+    .stat-label { font-size:.78rem; color:var(--w60); margin-top:.3rem; font-weight:500; }
+    @media(max-width:860px){ .about-inner{grid-template-columns:1fr;gap:2rem;} }
+
+    /* ══════════════════════════════════════════
+       MEGA MENU SECTION
+    ══════════════════════════════════════════ */
+    #menu { background:var(--purple-deep); }
+    .menu-section-header { max-width:1200px; margin:0 auto 2.5rem; }
+
+    /* category tabs */
+    .menu-tabs-wrap { max-width:1200px; margin:0 auto 3rem; position:sticky; top:68px; z-index:90; }
+    .menu-tabs {
+      display:flex; gap:.5rem; overflow-x:auto; padding:.9rem 1rem;
+      background:rgba(26,0,48,.92); backdrop-filter:blur(14px);
+      border-radius:var(--radius-lg); border:1px solid rgba(255,255,255,.1);
+      scrollbar-width:none;
+    }
+    .menu-tabs::-webkit-scrollbar { display:none; }
+    .menu-tab {
+      flex-shrink:0; display:inline-flex; align-items:center; gap:.45rem;
+      background:var(--w20); border:1px solid rgba(255,255,255,.1);
+      color:var(--w60); font-size:.82rem; font-weight:600;
+      padding:.52rem 1.1rem; border-radius:999px; cursor:pointer;
+      transition:all .22s; white-space:nowrap;
+    }
+    .menu-tab:hover { color:#fff; border-color:rgba(255,165,0,.4); }
+    .menu-tab.active { background:var(--accent); color:#1a0030; border-color:var(--accent); box-shadow:0 0 18px rgba(255,165,0,.4); }
+    .menu-tab .tab-icon { font-size:1rem; }
+
+    /* category block */
+    .menu-category { max-width:1200px; margin:0 auto 4.5rem; display:none; }
+    .menu-category.active { display:block; }
+    .cat-heading { display:flex; align-items:center; gap:1rem; margin-bottom:2rem; }
+    .cat-icon-big { font-size:2rem; }
+    .cat-title { font-size:1.5rem; font-weight:800; }
+    .cat-count { font-size:.78rem; color:var(--w60); background:var(--w20); border-radius:999px; padding:.25rem .75rem; margin-left:.5rem; }
+
+    /* menu grid */
+    .menu-grid {
+      display:grid;
+      /* min(100%,280px) stops column being wider than screen on phones */
+      grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr));
+      gap:1.3rem;
+      align-items:start;
+    }
+
+    /* menu card */
+    .menu-card {
+      background:var(--purple-glass); border:1px solid rgba(255,255,255,.1);
+      border-radius:var(--radius-lg); overflow:hidden; display:flex; flex-direction:column;
+      transition:transform .3s,box-shadow .3s,border-color .3s;
+      backdrop-filter:blur(6px);
+    }
+    .menu-card:hover { transform:translateY(-6px); box-shadow:0 14px 44px rgba(0,0,0,.45); border-color:rgba(255,165,0,.3); }
+    .menu-card-img {
+      position:relative;
+      overflow:hidden;
+      background:#2a0045;
+      width:100%;
+      /* aspect-ratio keeps image proportional on every screen */
+      aspect-ratio:16/9;
+    }
+    .menu-card-img img {
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      object-position:center;
+      display:block;
+      transition:transform .5s ease;
+    }
+    .menu-card:hover .menu-card-img img { transform:scale(1.07); }
+    .menu-card-img::after {
+      content:''; position:absolute; inset:0;
+      background:linear-gradient(transparent 52%, rgba(26,0,48,.65));
+      pointer-events:none;
+    }
+    .menu-badge {
+      position:absolute; top:.75rem; right:.75rem; z-index:2;
+      background:var(--accent); color:#1a0030; font-size:.65rem; font-weight:800;
+      letter-spacing:1px; text-transform:uppercase; padding:.2rem .6rem; border-radius:999px;
+    }
+    .menu-card-body { padding:1.3rem 1.4rem 1.5rem; flex:1; display:flex; flex-direction:column; }
+    .menu-tag { font-size:.65rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--accent); margin-bottom:.4rem; }
+    .menu-name { font-size:1.08rem; font-weight:700; margin-bottom:.45rem; line-height:1.3; }
+    .menu-desc { font-size:.82rem; color:var(--w60); line-height:1.65; flex:1; }
+    .menu-footer { display:flex; align-items:center; justify-content:space-between; margin-top:1.1rem; padding-top:1rem; border-top:1px solid var(--w20); }
+    .menu-price { font-size:1.12rem; font-weight:800; color:var(--accent); }
+    .menu-order-btn {
+      font-size:.78rem; font-weight:600; background:var(--accent-glow);
+      border:1px solid rgba(255,165,0,.4); color:var(--accent);
+      padding:.38rem .9rem; border-radius:999px; cursor:pointer; transition:all .2s; text-decoration:none;
+    }
+    .menu-order-btn:hover { background:var(--accent); color:#1a0030; border-color:var(--accent); }
+
+    /* ── GALLERY ── */
+    #gallery { background:var(--purple-mid); }
+    .gallery-header { max-width:1200px; margin:0 auto 2.5rem; }
+    .gallery-mosaic {
+      max-width:1200px; margin:0 auto;
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      /* No fixed row heights — rows size from content (aspect-ratio) */
+      gap:1rem;
+    }
+    .gi {
+      border-radius:var(--radius); overflow:hidden;
+      position:relative; cursor:pointer;
+      background:#1e0035;
+      aspect-ratio:1/1;   /* default square */
+    }
+    .gi:nth-child(1) { grid-column:span 2; grid-row:span 2; aspect-ratio:1/1; }
+    .gi:nth-child(5) { grid-column:span 2; aspect-ratio:2/1; }
+    .gi img {
+      width:100%; height:100%;
+      object-fit:cover; object-position:center;
+      display:block;
+      transition:transform .5s ease;
+    }
+    .gi:hover img { transform:scale(1.07); }
+    .gi::after { content:''; position:absolute; inset:0; background:linear-gradient(transparent 45%,rgba(10,0,20,.7)); pointer-events:none; }
+    .gi-label { position:absolute; bottom:.85rem; left:1rem; right:1rem; z-index:2; font-size:.83rem; font-weight:700; }
+    @media(max-width:700px){
+      .gallery-mosaic { grid-template-columns:repeat(2,1fr); }
+      .gi { aspect-ratio:1/1; }
+      .gi:nth-child(1) { grid-column:span 2; grid-row:span 1; aspect-ratio:16/9; }
+      .gi:nth-child(5) { grid-column:span 2; aspect-ratio:16/9; }
+    }
+    @media(max-width:420px){
+      .gallery-mosaic { grid-template-columns:1fr; }
+      .gi, .gi:nth-child(1), .gi:nth-child(5) { grid-column:span 1; grid-row:span 1; aspect-ratio:4/3; }
+    }
+
+    /* ── CONTACT ── */
+    #contact { background:var(--purple-deep); }
+    .contact-inner { max-width:1200px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:start; }
+    .contact-info-card { background:var(--purple-glass); border:1px solid rgba(255,255,255,.1); border-radius:var(--radius-lg); padding:2rem 1.8rem; backdrop-filter:blur(8px); }
+    .info-row { display:flex; align-items:flex-start; gap:1rem; padding:1rem 0; border-bottom:1px solid var(--w20); }
+    .info-row:last-child { border-bottom:none; }
+    .info-icon { width:42px; height:42px; flex-shrink:0; border-radius:10px; background:var(--accent-glow); border:1px solid rgba(255,165,0,.3); display:flex; align-items:center; justify-content:center; font-size:1.1rem; }
+    .info-label { font-size:.7rem; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--accent); margin-bottom:.2rem; }
+    .info-value { font-size:.9rem; line-height:1.6; }
+    .whatsapp-btn-main {
+      display:inline-flex; align-items:center; gap:.75rem;
+      background:#25D366; color:#fff; font-weight:700; font-size:1rem;
+      padding:1rem 2rem; border-radius:999px; width:fit-content;
+      transition:all .2s; box-shadow:0 0 28px rgba(37,211,102,.3); text-decoration:none;
+    }
+    .whatsapp-btn-main:hover { background:#1ebd5a; transform:translateY(-3px); box-shadow:0 8px 36px rgba(37,211,102,.55); }
+    .whatsapp-btn-main svg { width:22px; }
+    .map-placeholder { margin-top:1.5rem; border-radius:var(--radius); overflow:hidden; background:var(--w20); border:1px solid rgba(255,255,255,.12); height:200px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:.6rem; color:var(--w60); font-size:.88rem; }
+    @media(max-width:860px){ .contact-inner{grid-template-columns:1fr;gap:2.5rem;} }
+
+    /* ── FOOTER ── */
+    footer { background:#0f001e; border-top:1px solid rgba(255,255,255,.07); padding:2.5rem 5vw; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:1rem; }
+    .footer-logo { font-size:1.1rem; font-weight:800; }
+    .footer-logo span { color:var(--accent); }
+    .footer-copy { font-size:.8rem; color:var(--w60); }
+    .footer-links { display:flex; gap:1.5rem; list-style:none; }
+    .footer-links a { font-size:.8rem; color:var(--w60); transition:color .2s; }
+    .footer-links a:hover { color:var(--accent); }
+
+    /* ── FLOATING WHATSAPP ── */
+    #wa-float {
+      position:fixed; bottom:1.8rem; right:1.8rem; z-index:9999;
+      width:58px; height:58px; border-radius:50%; background:#25D366;
+      display:flex; align-items:center; justify-content:center;
+      box-shadow:0 4px 22px rgba(37,211,102,.5); text-decoration:none;
+      transition:transform .2s,box-shadow .2s; animation:wa-pulse 3s ease infinite;
+    }
+    #wa-float:hover { transform:scale(1.12); box-shadow:0 8px 36px rgba(37,211,102,.75); animation:none; }
+    #wa-float svg { width:30px; }
+    @keyframes wa-pulse { 0%,100%{box-shadow:0 4px 22px rgba(37,211,102,.5);} 50%{box-shadow:0 4px 40px rgba(37,211,102,.85);} }
+
+    @media (max-width: 768px) {
+
+  #hero{
+    min-height:auto;
+    padding:100px 20px 60px;
+  }
+
+  .hero-logo-img{
+    width:220px;
+    max-width:80vw;
+  }
+
+  .hero-badge{
+    font-size:12px;
+    padding:8px 16px;
+  }
+
+  .hero-tagline{
+    font-size:15px;
+    line-height:1.6;
+  }
+
+  .hero-content{
+    width:100%;
+  }
+
+}
+
+    /* ── RESPONSIVE POLISH ── */
+    @media(max-width:600px){
+      section { padding:60px 4vw; }
+      #menu   { padding:60px 4vw 40px; }
+      .menu-tabs-wrap { margin-bottom:1.8rem; }
+      .cat-title { font-size:1.2rem; }
+    }
+    @media(max-width:380px){
+      .menu-grid { grid-template-columns:1fr; }
+    }
+    @media(max-width:480px){
+      .hero-ctas { flex-direction:column; align-items:center; }
+      .btn-primary,.btn-outline { width:100%; max-width:280px; justify-content:center; }
+      .menu-tab { font-size:.72rem; padding:.42rem .8rem; }
+    }
+    @media(max-width:540px){
+      footer { flex-direction:column; align-items:center; text-align:center; }
+      .footer-links { justify-content:center; }
+    }
+
+    @media(prefers-reduced-motion:reduce){ .reveal,.reveal-left,.reveal-right,.ember{animation:none;transition:none;opacity:1;transform:none;} }
+  </style>
+</head>
+<body>
+
+<!-- ═══ NAVBAR ═══ -->
+<nav id="navbar">
+  <a href="#hero" class="nav-logo" aria-label="Sober Cuisine">
+    <img src="picturee.png" />
+  </a>
+  <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#about"   onclick="closeNav()">About</a></li>
+    <li><a href="#menu"    onclick="closeNav()">Menu</a></li>
+    <li><a href="#gallery" onclick="closeNav()">Gallery</a></li>
+    <li><a href="#contact" onclick="closeNav()">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section id="hero">
+  <div id="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-badge">🍢 Faisalabad's Finest Since 2019</div>
+    <div class="hero-logo-wrap">
+      <img src="picturee.png" />
+    </div>
+    <p class="hero-tagline">Real flame, real spice, real flavour. BBQ, Desi classics &amp; Fast Food crafted for the bold palate — right in the heart of Faisalabad.</p>
+    <div class="hero-ctas">
+      <a href="#menu" class="btn-primary">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg>
+        Explore Full Menu
+      </a>
+      <a href="https://wa.me/923032616111" target="_blank" rel="noopener" class="btn-outline">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+        Order on WhatsApp
+      </a>
+    </div>
+  </div>
+  <div class="hero-scroll-hint" aria-hidden="true">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    Scroll
+  </div>
+</section>
+
+<!-- ═══ ABOUT ═══ -->
+<section id="about">
+  <div class="about-inner">
+    <div class="about-img-wrap reveal-left">
+      <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=900&q=80" alt="Sober Cuisine interior ambience" loading="lazy" />
+      <div class="about-img-badge">🔥 Charcoal Fired Since 2019</div>
+    </div>
+    <div class="reveal-right">
+      <span class="section-label">Who We Are</span>
+      <h2 class="section-title">More than a meal —<br>it's an experience</h2>
+      <div class="divider"></div>
+      <p class="section-subtitle">Nestled in Gulberg, Faisalabad, Sober Cuisine was born from one belief: great food should never be ordinary. We blend smoky charcoal BBQ, time-honoured Desi recipes, and crowd-favourite Fast Food under one roof.</p>
+      <p class="section-subtitle" style="margin-top:.9rem;">Every dish is made fresh, every order with care. Whether it's a family dinner, a quick lunch, or a late-night craving — we've got a plate with your name on it.</p>
+      <p class="about-highlight">🔥 The smoke never lies. Come taste the difference.</p>
+      <div class="about-stats">
+        <div class="stat-card"><div class="stat-number">5+</div><div class="stat-label">Years of Flavour</div></div>
+        <div class="stat-card"><div class="stat-number">80+</div><div class="stat-label">Menu Items</div></div>
+        <div class="stat-card"><div class="stat-number">10K+</div><div class="stat-label">Happy Customers</div></div>
+        <div class="stat-card"><div class="stat-number">7</div><div class="stat-label">Menu Categories</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ MEGA MENU ═══ -->
+<section id="menu">
+  <div class="menu-section-header reveal">
+    <span class="section-label">Our Full Menu</span>
+    <h2 class="section-title">Every Craving, Covered</h2>
+    <div class="divider"></div>
+    <p class="section-subtitle">From sizzling BBQ to creamy desserts — browse by category and order your favourites straight on WhatsApp.</p>
+  </div>
+
+  <!-- TAB BAR -->
+  <div class="menu-tabs-wrap">
+    <div class="menu-tabs" id="menuTabs">
+      <button class="menu-tab active" data-cat="bbq"><span class="tab-icon">🔥</span> BBQ</button>
+      <button class="menu-tab" data-cat="desi"><span class="tab-icon">🍲</span> Desi Specials</button>
+      <button class="menu-tab" data-cat="burgers"><span class="tab-icon">🍔</span> Burgers</button>
+      <button class="menu-tab" data-cat="pizza"><span class="tab-icon">🍕</span> Pizza</button>
+      <button class="menu-tab" data-cat="fastfood"><span class="tab-icon">🍟</span> Fast Food</button>
+      <button class="menu-tab" data-cat="drinks"><span class="tab-icon">🥤</span> Drinks</button>
+      <button class="menu-tab" data-cat="desserts"><span class="tab-icon">🍨</span> Desserts</button>
+    </div>
+  </div>
+
+  <!-- ─── BBQ ─── -->
+  <div class="menu-category active" id="cat-bbq">
+    <div class="cat-heading">
+      <span class="cat-icon-big">🔥</span>
+      <h3 class="cat-title">BBQ Specials <span class="cat-count">6 items</span></h3>
+    </div>
+    <div class="menu-grid">
+
+      <div class="menu-card reveal">
+        <div class="menu-card-img">
+          <img src="https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?w=600&q=75" alt="Chicken Tikka" loading="lazy"/>
+          <span class="menu-badge">Best Seller</span>
+        </div>
+        <div class="menu-card-body">
+          <div class="menu-tag">BBQ</div>
+          <div class="menu-name">Charcoal Chicken Tikka</div>
+          <div class="menu-desc">Bone-in chicken marinated overnight in house spices, skewered and slow-cooked over live charcoal for that unmistakable smoky char.</div>
+          <div class="menu-footer"><div class="menu-price">Rs. 850</div><a href="https://wa.me/923032616111?text=I'd like to order Charcoal Chicken Tikka" target="_blank" class="menu-order-btn">Order Now</a></div>
+        </div>
+      </div>
+
+      <div class="menu-card reveal">
+        <div class="menu-card-img">
+          <img src="https://images.unsplash.com/photo-1558030006-450675393462?w=600&q=75" alt="Seekh Kebab" loading="lazy"/>
+        </div>
+        <div class="menu-card-body">
+          <div class="menu-tag">BBQ</div>
+          <div class="menu-name">Seekh Kebab Platter</div>
+          <div class="menu-desc">Minced beef with green chilies, coriander and secret spices, grilled on skewers. Served with mint chutney and raita.</div>
+          <div class="menu-footer"><div class="menu-price">Rs. 750</div><a href="https://wa.me/923032616111?text=I'd like to order Seekh Kebab Platter" target="_blank" class="menu-order-btn">Order Now</a></div>
+        </div>
+      </div>
+
+      <div class="menu-card reveal">
+        <div class="menu-card-img">
+          <img src="https://images.unsplash.com/photo-1560024818-2c6d122cfbe2?q=80&w=1674&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="BBQ Mix Grill" loading="lazy"/>
+          <span class="menu-badge">Popular</span>
+        </div>
+        <div class="menu-card-body">
+          <div class="menu-tag">BBQ</div>
+          <div class="menu-name">Mixed BBQ Platter</div>
+          <div class="menu-desc">A feast for two — chicken tikka, seekh kebab, boti, and shami, all grilled fresh and served with four chutneys and garlic naan.</div>
+          <div class="menu-footer"><div class="menu-price">Rs. 1,800</div><a href="https://wa.me/923032616111?text=I'd like to order Mixed BBQ Platter" target="_blank" class="menu-order-btn">Order Now</a></div>
+        </div>
+      </div>
+
+      <div class="menu-card reveal">
+        <div class="menu-card-img">
+          <img src="https://images.unsplash.com/photo-1644364935906-792b2245a2c0?q=80&w=2068&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Boti Kebab" loading="lazy"/>
+        </div>
+        <div class="menu-card-body">
+          <div class="menu-tag">BBQ</div>
+          <div class="menu-name">Beef Boti Kebab</div>
+          <div class="menu-desc">Cubed prime beef marinated in yoghurt and spices, threaded on skewers and chargrilled until juicy and tender inside, crisp outside.</div>
+          <div class="menu-footer"><div class="menu-price">Rs. 950</div><a href="https://wa.me/923032616111?text=I'd like to order Beef Boti Kebab" target="_blank" class="menu-order-btn">Order Now</a></div>
+        </div>
+      </div>
+
+      <div class="menu-card reveal">
+        <div class="menu-card-img">
+          <img src="https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=600&q=75" alt="Malai Tikka" loading="lazy"/>
+        </div>
+        <div class="menu-card-body">
+          <div class="menu-tag">BBQ</div>
+          <div class="menu-name">Malai Chicken Tikka</div>
+          <div class="menu-desc">Delicate white malai-marinated chicken tikka with a creamy, mild and fragrant flavour. The crowd-pleaser for those who like it light.</div>
+          <div class="menu-footer"><div class="menu-price">Rs. 900</div><a href="https://wa.me/923032616111?text=I'd like to order Malai Chicken Tikka" target="_blank" class="menu-order-btn">Order Now</a></div>
+        </div>
+      </div>
+
+      <div class="menu-card reveal">
+        <div class="menu-card-img">
+          <img src="https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=600&q=75" alt="BBQ Wings" loading="lazy"/>
+        </div>
+        <div class="menu-card-body">
+          <div class="menu-tag">BBQ</div>
+          <div class="menu-name">Spicy BBQ Wings (6 pcs)</div>
+          <div class="menu-desc">Crispy chicken wings basted in a fiery house BBQ sauce and finished on the grill. Perfectly smoky with a lip-burning kick.</div>
+          <div class="menu-footer"><div class="menu-price">Rs. 650</div><a href="https://wa.me/923032616111?text=I'd like to order Spicy BBQ Wings" target="_blank" class="menu-order-btn">Order Now</a></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ─── DESI ─── -->
+  <div class="menu-category" id="cat-desi">
+    <div class="cat-heading">
+      <span class="cat-icon-big">🍲</span>
+      <h3 class="cat-title">Desi Specials <span class="cat-count">6 items</span></h3>
+    </div>
+    <div class="menu-grid">
+
+      <div class="menu-card reveal">
+        <div class="menu-card-img">
+          <img src="https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=600&q=75" alt="Mutton Karahi" loading="lazy"/>
+          <span class="menu-badge">Signature</span>
+        </div>
+        <div class="menu-card-body">
+          <div class="menu-tag">Desi</div>
+          <div class="menu-name">Mutton Karahi</div>
+          <div class="menu-desc">Tender mutton cooked in a blazing wok with tomatoes, ginger, green chilies and our masala blend. Best with freshly baked naan.</div>
+          <div class="menu-footer"><div class="menu-price">Rs. 1,450</div><a href="https://wa.me/923032616111?text=I'd like to order Mutton Karahi" target="_blank" class="menu-order-btn">Order Now</a></div>
+        </div>
+      </div>
+
+      <div class="menu-card reveal">
+        <div class="menu-card-img">
+          <img src="https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=600&q=75" alt="Chicken Karahi" loading="lazy"/>
+          <span class="menu-badge">Best Seller</span>
+        </div>
+        <div class="menu-card-body">
+          <div class="menu-tag">Desi</div>
+          <div class="menu-name">Chicken Karahi</div>
+          <div class="menu-desc">Whole chicken pieces simmered in a rich tomato-ginger gravy with whole spices and finished with fresh coriander and julienned ginger.</div>
+          <div class="menu-footer"><div class="menu-price">Rs. 1,100</div><a href="https://wa.me/923032616111?text=I'd like to order Chicken Karahi" target="_blank" class="menu-order-btn">Order Now</a></div>
+        </div>
+      </div>
+
+      <div class="menu-card reveal">
+        <div class="menu-card-img">
+          <img src="https://images.unsplash.com/photo-1547592180-85f173990554?w=600&q=75" alt="Daal Makhani" loading="lazy"/>
+        </div>
+        <div class="menu-card-body">
+          <div class="menu-tag">Desi</div>
+          <div class="menu-name">Daal Makhani</div>
+          <div class="menu-desc">Slow-simmered black lentils enriched with butter, cream and aromatic spices. A comforting bowl of pure desi soul — no shortcuts.</div>
+          <div class="menu-footer"><div class="menu-price">Rs. 450</div><a href="https://wa.me/923032616111?text=I'd like to order Daal Makhani" target="_blank" class="menu-order-btn">Order Now</a></div>
+        </div>
+      </div>
+
+      <div class="menu-card reveal">
+        <div class="menu-card-img">
+          <img src="https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=600&q=75" alt="Paya" loading="lazy"/>
+        </div>
+        <div class="menu-card-body">
+          <div class="menu-tag">Desi</div>
+          <div class="menu-name">Siri Paye (Morning Special)</div>
+          <div class="menu-desc">Traditional slow-cooked trotters simmered overnight with whole spices. A true Lahori breakfast classic — rich, gelatinous and deeply satisfying.</div>
+          <div class="menu-footer"><div class="menu-price">Rs. 550</div><a href="https://wa.me/923032616111?text=I'd like to order Siri Paye" target="_blank" class="menu-order-btn">Order Now</a></div>
+        </div>
+      </div>
+
+      <div class="menu-card reveal">
+        <div class="menu-card-img">
+          <img src="https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=600&q=75" alt="Biryani" loading="lazy"/>
+          <span class="menu-badge">Popular</span>
+        </div>
+        <div class="menu-card-body">
+          <div class="menu-tag">Desi</div>
+          <div class="menu-name">Beef Dum Biryani</div>
+          <div class="menu-desc">Fragrant basmati rice slow-cooked on the dum with tender beef, whole spices and crispy fried onions. Served with raita and salad.</div>
+          <div class="menu-footer"><div class="menu-price">Rs. 650</div><a href="https://wa.me/923032616111?text=I'd like to order Beef Dum Biryani" target="_blank" class="menu-order-btn">Order Now</a></div>
+        </div>
+      </div>
+
+      <div class="menu-card reveal">
+        <div class="menu-card-img">
+          <img src="https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=600&q=75" alt="Haleem" loading="lazy"/>
+        </div>
+        <div class="menu-card-body">
+          <div class="menu-tag">Desi</div>
+          <div class="menu-name">Beef Haleem</div>
+          <div class="menu-desc">A hearty slow-cooked porridge of meat and lentils, spiced deeply and garnished with ginger, fried onions and fresh coriander.</div>
+          <div class="menu-footer"><div class="menu-price">Rs. 500</div><a href="https://wa.me/923032616111?text=I'd like to order Beef Haleem" target="_blank" class="menu-order-btn">Order Now</a></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ─── BURGERS ─── -->
+  <div class="menu-category" id="cat-burgers">
+    <div class="cat-heading">
+      <span class="cat-icon-big">🍔</span>
+      <h3 class="cat-title">Burgers <span class="cat-count">6 items</span></h3>
+    </div>
+    <div class="menu-grid">
+
+      <div class="menu-card reveal">
+        <div class="menu-card-img">
+          <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600&q=75" alt="Sober Special Burger" loading="lazy"/>
+          <span class="menu-badge">Signature</span>
+        </div>
+        <div class="menu-card-body">
+          <div class="menu-tag">Burger</div>
+          <div class="menu-name">Sober Special Burger</div>
+          <div class="menu-desc">Double beef patty, melted cheddar, crispy onion rings, jalapeños and smoky chipotle mayo in a toasted brioche bun.</div>
+          <div class="menu-footer"><div class="menu-price">Rs. 680</div><a href="https://wa.me/923032616111?text=I'd like to order Sober Special Burger" target="_blank" class="menu-order-btn">Order Now</a></div>
+        </div>
+      </div>
+
+      <div class="menu-card reveal">
+        <div class="menu-card-img">
+          <img src="https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=600&q=75" alt="Crispy Chicken Burger" loading="lazy"/>
+          <span class="menu-badge">Best Seller</span>
+        </div>
+        <div class="menu-card-body">
+          <div class="menu-tag">Burger</div>
+          <div class="menu-name">Crispy Chicken Burger</div>
+          <div class="menu-desc">A thick, cornflake-crumbed chicken breast fillet with coleslaw, pickle, and honey-mustard sauce in a sesame bun.</div>
+          <div class="menu-footer"><div class="menu-price">Rs. 580</div><a href="https://wa.me/923032616111?text=I'd like to order Crispy Chicken Burger" target="_blank" class="menu-order-btn">Order Now</a></div>
+        </div>
+      </div>
+
+      <div class="menu-card reveal">
+        <div class="menu-card-img">
+          <img src="https://images.unsplash.com/photo-1553979459-d2229ba7433b?w=600&q=75" alt="Smash Burger" loading="lazy"/>
+        </div>
+        <div class="menu-card-body">
+          <div class="menu-tag">Burger</div>
+          <div class="menu-name">Smash Burger (Double)</div>
+          <div class="menu-desc">Two smashed beef patties with crispy lacy edges, American cheese, pickles, grilled onions and Sober sauce on a potato bun.</div>
+          <div class="menu-footer"><div class="menu-price">Rs. 750</div><a href="https://wa.me/923032616111?text=I'd like to order Smash Burger" target="_blank" class="menu-order-btn">Order Now</a></div>
+        </div>
+      </div>
+
+      <div class="menu-card reveal">
+        <div class="menu-card-img">
+          <img src="https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?w=600&q=75" alt="Zinger Burger" loading="lazy"/>
+        </div>
+        <div class="menu-card-body">
+          <div class="menu-tag">Burger</div>
+          <div class="menu-name">Spicy Zinger Burger</div>
+          <div class="menu-desc">Our fiery take on the classic — heavily spiced crispy chicken fillet with hot sauce, iceberg lettuce and garlic mayo.</div>
+          <div class="menu-footer"><div class="menu-price">Rs. 550</div><a href="https://wa.me/923032616111?text=I'd like to order Spicy Zinger Burger" target="_blank" class="menu-order-btn">Order Now</a></div>
+        </div>
+      </div>
+
+      <div class="menu-card reveal">
+        <div class="menu-card-img">
+          <img src="https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=600&q=75" alt="Mushroom Swiss Burger" loading="lazy"/>
+        </div>
+        <div class="menu-card-body">
+          <div class="menu-tag">Burger</div>
+          <div class="menu-name">Mushroom Swiss Burger</div>
+          <div class="menu-desc">Juicy beef patty topped with sautéed mushrooms, Swiss cheese, caramelised onions and a rich brown gravy sauce.</div>
+          <div class="menu-footer"><div class="menu-price">Rs. 720</div><a href="https://wa.me/923032616111?text=I'd like to order Mushroom Swiss Burger" target="_blank" class="menu-order-btn">Order Now</a></div>
+        </div>
+      </div>
+
+      <div class="menu-card reveal">
+        <div class="menu-card-img">
+          <img src="https://images.unsplash.com/photo-1520072959219-c595dc870360?w=600&q=75" alt="BBQ Burger" loading="lazy"/>
+        </div>
+        <div class="menu-card-body">
+          <div class="menu-tag">Burger</div>
+          <div class="menu-name">BBQ Beef Tower</div>
+          <div class="menu-desc">Triple-stacked beef patties, bacon-style beef strips, BBQ sauce, onion rings and aged cheddar — an indulgent tower of flavour.</div>
+          <div class="menu-footer"><div class="menu-price">Rs. 950</div><a href="https://wa.me/923032616111?text=I'd like to order BBQ Beef Tower" target="_blank" class="menu-order-btn">Order Now</a></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ─── PIZZA ─── -->
+  <div class="menu-category" id="cat-pizza">
+    <div class="cat-heading">
+      <span class="cat-icon-big">🍕</span>
+      <h3 class="cat-title">Pizza <span class="cat-count">6 items</span></h3>
+    </div>
+    <div class="menu-grid">
+
+      <div class="menu-card reveal">
+        <div class="menu-card-img">
+          <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=600&q=75" alt="Tikka Pizza" loading="lazy"/>
+          <span class="menu-badge">Signature</span>
+        </div>
+        <div class="menu-card-body">
+          <div class="menu-tag">Pizza</div>
+          <div class="menu-name">Desi Tikka Pizza (12")</div>
+          <div class="menu-desc">Our fusion masterpiece — tikka-spiced chicken on a tandoori sauce base with mozzarella, capsicum, onion and a drizzle of chili oil.</div>
+          <div class="menu-footer"><div class="menu-price">Rs. 1,100</div><a href="https://wa.me/923032616111?text=I'd like to order Desi Tikka Pizza" target="_blank" class="menu-order-btn">Order Now</a></div>
+        </div>
+      </div>
+
+      <div class="menu-card reveal">
+        <div class="menu-card-img">
+          <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=600&q=75" alt="Pepperoni Pizza" loading="lazy"/>
+          <span class="menu-badge">Best Seller</span>
+        </div>
+        <div class="menu-card-body">
+          <div class="menu-tag">Pizza</div>
+          <div class="menu-name">Beef Pepperoni Pizza (12")</div>
+          <div class="menu-desc">Classic tomato base loaded with halal beef pepperoni, mozzarella and oregano. Crispy thin crust, baked in our stone oven.</div>
+          <div class="menu-footer"><div class="menu-price">Rs. 1,050</div><a href="https://wa.me/923032616111?text=I'd like to order Beef Pepperoni Pizza" target="_blank" class="menu-order-btn">Order Now</a></div>
+        </div>
+      </div>
+
+      <div class="menu-card reveal">
+        <div class="menu-card-img">
+          <img src="https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=600&q=75" alt="BBQ Chicken Pizza" loading="lazy"/>
+        </div>
+        <div class="menu-card-body">
+          <div class="menu-tag">Pizza</div>
+          <div class="menu-name">Smoky BBQ Chicken (12")</div>
+          <div class="menu-desc">Smoky BBQ sauce base with grilled chicken strips, red onion, sweetcorn and double mozzarella. A tangy crowd pleaser.</div>
+          <div class="menu-footer"><div class="menu-price">Rs. 1,000</div><a href="https://wa.me/923032616111?text=I'd like to order Smoky BBQ Chicken Pizza" target="_blank" class="menu-order-btn">Order Now</a></div>
+        </div>
+      </div>
+
+      <div class="menu-card reveal">
+        <div class="menu-card-img">
+          <img src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=600&q=75" alt="Veggie Pizza" loading="lazy"/>
+        </div>
+        <div class="menu-card-body">
+          <div class="menu-tag">Pizza</div>
+          <div class="menu-name">Garden Veggie Supreme (12")</div>
+          <div class="menu-desc">Tomato base piled with capsicum, mushrooms, black olives, jalapeños, red onion and creamy feta — colourful, fresh and delicious.</div>
+          <div class="menu-footer"><div class="menu-price">Rs. 850</div><a href="https://wa.me/923032616111?text=I'd like to order Garden Veggie Supreme Pizza" target="_blank" class="menu-order-btn">Order Now</a></div>
+        </div>
+      </div>
+
+      <div class="menu-card reveal">
+        <div class="menu-card-img">
+          <img src="https://images.unsplash.com/photo-1548369937-47519962c11a?w=600&q=75" alt="Cheese Pizza" loading="lazy"/>
+        </div>
+        <div class="menu-card-body">
+          <div class="menu-tag">Pizza</div>
+          <div class="menu-name">Four Cheese Bliss (12")</div>
+          <div class="menu-desc">Mozzarella, cheddar, parmesan and cream cheese melted together on a garlic butter base — for the truest cheese lover.</div>
+          <div class="menu-footer"><div class="menu-price">Rs. 980</div><a href="https://wa.me/923032616111?text=I'd like to order Four Cheese Pizza" target="_blank" class="menu-order-btn">Order Now</a></div>
+        </div>
+      </div>
+
+      <div class="menu-card reveal">
+        <div class="menu-card-img">
+          <img src="https://images.unsplash.com/photo-1590947132387-155cc02f3212?w=600&q=75" alt="Spicy Pizza" loading="lazy"/>
+        </div>
+        <div class="menu-card-body">
+          <div class="menu-tag">Pizza</div>
+          <div class="menu-name">Inferno Special (12")</div>
+          <div class="menu-desc">For the heat seekers — spiced beef mince, sliced chilies, jalapeños and ghost-chili sauce on a fiery red base. Not for the faint-hearted.</div>
+          <div class="menu-footer"><div class="menu-price">Rs. 1,150</div><a href="https://wa.me/923032616111?text=I'd like to order Inferno Special Pizza" target="_blank" class="menu-order-btn">Order Now</a></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ─── FAST FOOD ─── -->
+  <div class="menu-category" id="cat-fastfood">
+    <div class="cat-heading">
+      <span class="cat-icon-big">🍟</span>
+      <h3 class="cat-title">Fast Food <span class="cat-count">6 items</span></h3>
+    </div>
+    <div class="menu-grid">
+
+      <div class="menu-card reveal">
+        <div class="menu-card-img">
+          <img src="https://plus.unsplash.com/premium_photo-1673747885079-6a915d368c82?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Loaded Fries" loading="lazy"/>
+          <span class="menu-badge">Fan Fave</span>
+        </div>
+        <div class="menu-card-body">
+          <div class="menu-tag">Fast Food</div>
+          <div class="menu-name">Loaded Masala Fries</div>
+          <div class="menu-desc">Golden fries tossed in chaat masala, topped with cheese sauce, jalapeños and ketchup. Dangerously shareable.</div>
+          <div class="menu-footer"><div class="menu-price">Rs. 350</div><a href="https://wa.me/923032616111?text=I'd like to order Loaded Masala Fries" target="_blank" class="menu-order-btn">Order Now</a></div>
+        </div>
+      </div>
+
+      <div class="menu-card reveal">
+        <div class="menu-card-img">
+          <img src="https://images.unsplash.com/photo-1606755962773-d324e0a13086?w=600&q=75" alt="Chicken Strips" loading="lazy"/>
+        </div>
+        <div class="menu-card-body">
+          <div class="menu-tag">Fast Food</div>
+          <div class="menu-name">Crispy Chicken Strips (5 pcs)</div>
+          <div class="menu-desc">Tender chicken strips coated in a seasoned golden crust. Served with your choice of BBQ, garlic or buffalo dip.</div>
+          <div class="menu-footer"><div class="menu-price">Rs. 480</div><a href="https://wa.me/923032616111?text=I'd like to order Crispy Chicken Strips" target="_blank" class="menu-order-btn">Order Now</a></div>
+        </div>
+      </div>
+
+      <div class="menu-card reveal">
+        <div class="menu-card-img">
+          <img src="https://images.unsplash.com/photo-1619881590738-a111d176d906?w=600&q=75" alt="Shawarma" loading="lazy"/>
+          <span class="menu-badge">Best Seller</span>
+        </div>
+        <div class="menu-card-body">
+          <div class="menu-tag">Fast Food</div>
+          <div class="menu-name">Chicken Shawarma Roll</div>
+          <div class="menu-desc">Spiced rotisserie chicken shaved into a warm flatbread with garlic sauce, pickled veggies, tomato and a squeeze of lemon.</div>
+          <div class="menu-footer"><div class="menu-price">Rs. 380</div><a href="https://wa.me/923032616111?text=I'd like to order Chicken Shawarma Roll" target="_blank" class="menu-order-btn">Order Now</a></div>
+        </div>
+      </div>
+
+      <div class="menu-card reveal">
+        <div class="menu-card-img">
+          <img src="https://images.unsplash.com/photo-1531749668029-2db88e4276c7?w=600&q=75" alt="Hot Dog" loading="lazy"/>
+        </div>
+        <div class="menu-card-body">
+          <div class="menu-tag">Fast Food</div>
+          <div class="menu-name">Beef Hot Dog</div>
+          <div class="menu-desc">Juicy beef sausage in a soft brioche roll with crispy fried onions, yellow mustard, ketchup and a sprinkle of chili flakes.</div>
+          <div class="menu-footer"><div class="menu-price">Rs. 320</div><a href="https://wa.me/923032616111?text=I'd like to order Beef Hot Dog" target="_blank" class="menu-order-btn">Order Now</a></div>
+        </div>
+      </div>
+
+      <div class="menu-card reveal">
+        <div class="menu-card-img">
+          <img src="https://images.unsplash.com/photo-1541014741259-de529411b96a?w=600&q=75" alt="Nuggets" loading="lazy"/>
+        </div>
+        <div class="menu-card-body">
+          <div class="menu-tag">Fast Food</div>
+          <div class="menu-name">Chicken Nuggets (10 pcs)</div>
+          <div class="menu-desc">Juicy chicken nuggets with a crunchy seasoned coating. Served with ketchup and a spicy dipping sauce on the side.</div>
+          <div class="menu-footer"><div class="menu-price">Rs. 420</div><a href="https://wa.me/923032616111?text=I'd like to order Chicken Nuggets" target="_blank" class="menu-order-btn">Order Now</a></div>
+        </div>
+      </div>
+
+      <div class="menu-card reveal">
+        <div class="menu-card-img">
+          <img src="https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?w=600&q=75" alt="Club Sandwich" loading="lazy"/>
+        </div>
+        <div class="menu-card-body">
+          <div class="menu-tag">Fast Food</div>
+          <div class="menu-name">Club Sandwich</div>
+          <div class="menu-desc">Triple-decker toasted sandwich with grilled chicken, beef strips, cheddar, lettuce, tomato and mayo. A satisfying classic.</div>
+          <div class="menu-footer"><div class="menu-price">Rs. 490</div><a href="https://wa.me/923032616111?text=I'd like to order Club Sandwich" target="_blank" class="menu-order-btn">Order Now</a></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ─── DRINKS ─── -->
+  <div class="menu-category" id="cat-drinks">
+    <div class="cat-heading">
+      <span class="cat-icon-big">🥤</span>
+      <h3 class="cat-title">Drinks & Shakes <span class="cat-count">6 items</span></h3>
+    </div>
+    <div class="menu-grid">
+
+      <div class="menu-card reveal">
+        <div class="menu-card-img">
+          <img src="https://images.unsplash.com/photo-1638176066666-ffb2f013c7dd?w=600&q=75" alt="Mango Shake" loading="lazy"/>
+          <span class="menu-badge">Seasonal</span>
+        </div>
+        <div class="menu-card-body">
+          <div class="menu-tag">Shake</div>
+          <div class="menu-name">Fresh Mango Shake</div>
+          <div class="menu-desc">Real Sindhri mangoes blended with chilled milk and a hint of cardamom. No fake flavours — just pure Pakistani summer.</div>
+          <div class="menu-footer"><div class="menu-price">Rs. 280</div><a href="https://wa.me/923032616111?text=I'd like to order Fresh Mango Shake" target="_blank" class="menu-order-btn">Order Now</a></div>
+        </div>
+      </div>
+
+      <div class="menu-card reveal">
+        <div class="menu-card-img">
+          <img src="https://images.unsplash.com/photo-1641665271888-575e46923776?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Oreo Shake" loading="lazy"/>
+          <span class="menu-badge">Best Seller</span>
+        </div>
+        <div class="menu-card-body">
+          <div class="menu-tag">Shake</div>
+          <div class="menu-name">Oreo Cookies & Cream Shake</div>
+          <div class="menu-desc">Thick vanilla ice cream blended with crushed Oreos, topped with whipped cream and a whole cookie. Dangerously good.</div>
+          <div class="menu-footer"><div class="menu-price">Rs. 320</div><a href="https://wa.me/923032616111?text=I'd like to order Oreo Shake" target="_blank" class="menu-order-btn">Order Now</a></div>
+        </div>
+      </div>
+
+      <div class="menu-card reveal">
+        <div class="menu-card-img">
+          <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&q=75" alt="Lemonade" loading="lazy"/>
+        </div>
+        <div class="menu-card-body">
+          <div class="menu-tag">Drink</div>
+          <div class="menu-name">Virgin Mojito</div>
+          <div class="menu-desc">Freshly squeezed lime juice with mint, sugar syrup and soda water. Refreshing, zingy and perfect alongside any meal.</div>
+          <div class="menu-footer"><div class="menu-price">Rs. 220</div><a href="https://wa.me/923032616111?text=I'd like to order Virgin Mojito" target="_blank" class="menu-order-btn">Order Now</a></div>
+        </div>
+      </div>
+
+      <div class="menu-card reveal">
+        <div class="menu-card-img">
+          <img src="https://images.unsplash.com/photo-1553361371-9b22f78e8b1d?w=600&q=75" alt="Strawberry Shake" loading="lazy"/>
+        </div>
+        <div class="menu-card-body">
+          <div class="menu-tag">Shake</div>
+          <div class="menu-name">Strawberry Bliss Shake</div>
+          <div class="menu-desc">Fresh strawberries blended with vanilla ice cream and topped with strawberry coulis and whipped cream. A rosy indulgence.</div>
+          <div class="menu-footer"><div class="menu-price">Rs. 300</div><a href="https://wa.me/923032616111?text=I'd like to order Strawberry Bliss Shake" target="_blank" class="menu-order-btn">Order Now</a></div>
+        </div>
+      </div>
+
+      <div class="menu-card reveal">
+        <div class="menu-card-img">
+          <img src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=600&q=75" alt="Cold Coffee" loading="lazy"/>
+        </div>
+        <div class="menu-card-body">
+          <div class="menu-tag">Drink</div>
+          <div class="menu-name">Desi Cold Coffee</div>
+          <div class="menu-desc">Strong espresso blended with full-fat milk, sugar and ice — the Pakistani dhabha favourite, now served chilled and stylish.</div>
+          <div class="menu-footer"><div class="menu-price">Rs. 250</div><a href="https://wa.me/923032616111?text=I'd like to order Desi Cold Coffee" target="_blank" class="menu-order-btn">Order Now</a></div>
+        </div>
+      </div>
+
+      <div class="menu-card reveal">
+        <div class="menu-card-img">
+          <img src="https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=600&q=75" alt="Lassi" loading="lazy"/>
+        </div>
+        <div class="menu-card-body">
+          <div class="menu-tag">Drink</div>
+          <div class="menu-name">Sweet Lassi (Large)</div>
+          <div class="menu-desc">Thick, creamy churned yoghurt blended with sugar and rose water. The ultimate companion to our spicy desi dishes.</div>
+          <div class="menu-footer"><div class="menu-price">Rs. 200</div><a href="https://wa.me/923032616111?text=I'd like to order Sweet Lassi" target="_blank" class="menu-order-btn">Order Now</a></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ─── DESSERTS ─── -->
+  <div class="menu-category" id="cat-desserts">
+    <div class="cat-heading">
+      <span class="cat-icon-big">🍨</span>
+      <h3 class="cat-title">Desserts <span class="cat-count">6 items</span></h3>
+    </div>
+    <div class="menu-grid">
+
+      <div class="menu-card reveal">
+        <div class="menu-card-img">
+          <img src="https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=600&q=75" alt="Gulab Jamun" loading="lazy"/>
+          <span class="menu-badge">Classic</span>
+        </div>
+        <div class="menu-card-body">
+          <div class="menu-tag">Dessert</div>
+          <div class="menu-name">Gulab Jamun (4 pcs)</div>
+          <div class="menu-desc">Soft khoya dumplings deep-fried to a golden brown and soaked in cardamom-rose sugar syrup. Served warm with vanilla ice cream.</div>
+          <div class="menu-footer"><div class="menu-price">Rs. 280</div><a href="https://wa.me/923032616111?text=I'd like to order Gulab Jamun" target="_blank" class="menu-order-btn">Order Now</a></div>
+        </div>
+      </div>
+
+      <div class="menu-card reveal">
+        <div class="menu-card-img">
+          <img src="https://images.unsplash.com/photo-1551024506-0bccd828d307?w=600&q=75" alt="Chocolate Lava Cake" loading="lazy"/>
+          <span class="menu-badge">Best Seller</span>
+        </div>
+        <div class="menu-card-body">
+          <div class="menu-tag">Dessert</div>
+          <div class="menu-name">Chocolate Lava Cake</div>
+          <div class="menu-desc">Warm dark-chocolate fondant with a gooey molten centre, dusted with icing sugar. Served with two scoops of vanilla ice cream.</div>
+          <div class="menu-footer"><div class="menu-price">Rs. 380</div><a href="https://wa.me/923032616111?text=I'd like to order Chocolate Lava Cake" target="_blank" class="menu-order-btn">Order Now</a></div>
+        </div>
+      </div>
+
+      <div class="menu-card reveal">
+        <div class="menu-card-img">
+          <img src="https://images.unsplash.com/photo-1567171466295-4afa63d45416?w=600&q=75" alt="Kulfi" loading="lazy"/>
+        </div>
+        <div class="menu-card-body">
+          <div class="menu-tag">Dessert</div>
+          <div class="menu-name">Malai Kulfi (Stick)</div>
+          <div class="menu-desc">Traditional dense frozen cream kulfi infused with pistachio, cardamom and saffron. A proper desi frozen treat on a stick.</div>
+          <div class="menu-footer"><div class="menu-price">Rs. 180</div><a href="https://wa.me/923032616111?text=I'd like to order Malai Kulfi" target="_blank" class="menu-order-btn">Order Now</a></div>
+        </div>
+      </div>
+
+      <div class="menu-card reveal">
+        <div class="menu-card-img">
+          <img src="https://images.unsplash.com/photo-1488477181946-6428a0291777?w=600&q=75" alt="Waffles" loading="lazy"/>
+        </div>
+        <div class="menu-card-body">
+          <div class="menu-tag">Dessert</div>
+          <div class="menu-name">Belgian Waffle Sundae</div>
+          <div class="menu-desc">Crispy golden waffles loaded with two scoops of ice cream, chocolate sauce, whipped cream, sprinkles and a cherry on top.</div>
+          <div class="menu-footer"><div class="menu-price">Rs. 450</div><a href="https://wa.me/923032616111?text=I'd like to order Belgian Waffle Sundae" target="_blank" class="menu-order-btn">Order Now</a></div>
+        </div>
+      </div>
+
+      <div class="menu-card reveal">
+        <div class="menu-card-img">
+          <img src="https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=600&q=75" alt="Kheer" loading="lazy"/>
+        </div>
+        <div class="menu-card-body">
+          <div class="menu-tag">Dessert</div>
+          <div class="menu-name">Rice Kheer (Bowl)</div>
+          <div class="menu-desc">Slow-cooked creamy rice pudding with full-fat milk, sugar, cardamom and rose water, garnished with pistachios and silver leaf.</div>
+          <div class="menu-footer"><div class="menu-price">Rs. 200</div><a href="https://wa.me/923032616111?text=I'd like to order Rice Kheer" target="_blank" class="menu-order-btn">Order Now</a></div>
+        </div>
+      </div>
+
+      <div class="menu-card reveal">
+        <div class="menu-card-img">
+          <img src="https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=600&q=75" alt="Brownie" loading="lazy"/>
+        </div>
+        <div class="menu-card-body">
+          <div class="menu-tag">Dessert</div>
+          <div class="menu-name">Fudge Brownie à la Mode</div>
+          <div class="menu-desc">Dense, fudgy dark-chocolate brownie, warmed and served with salted caramel ice cream and a drizzle of hot fudge sauce.</div>
+          <div class="menu-footer"><div class="menu-price">Rs. 350</div><a href="https://wa.me/923032616111?text=I'd like to order Fudge Brownie" target="_blank" class="menu-order-btn">Order Now</a></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ GALLERY ═══ -->
+<section id="gallery">
+  <div class="gallery-header reveal">
+    <span class="section-label">Gallery</span>
+    <h2 class="section-title">Food that Speaks for Itself</h2>
+    <div class="divider"></div>
+    <p class="section-subtitle">A glimpse into what we cook, how we cook it, and the smiles it brings.</p>
+  </div>
+  <div class="gallery-mosaic max-w">
+    <div class="gi reveal">
+      <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=900&q=80" alt="Restaurant ambience" loading="lazy"/>
+      <div class="gi-label">Our Dining Space</div>
+    </div>
+    <div class="gi reveal">
+      <img src="https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?w=600&q=75" alt="Chicken Tikka" loading="lazy"/>
+      <div class="gi-label">Charcoal Tikka</div>
+    </div>
+    <div class="gi reveal">
+      <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600&q=75" alt="Burger" loading="lazy"/>
+      <div class="gi-label">Sober Special Burger</div>
+    </div>
+    <div class="gi reveal">
+      <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=600&q=75" alt="Pizza" loading="lazy"/>
+      <div class="gi-label">Stone-Baked Pizza</div>
+    </div>
+    <div class="gi reveal">
+      <img src="https://images.unsplash.com/photo-1551024506-0bccd828d307?w=900&q=80" alt="Dessert" loading="lazy"/>
+      <div class="gi-label">Decadent Desserts</div>
+    </div>
+    <div class="gi reveal">
+      <img src="https://images.unsplash.com/photo-1611928237590-087afc90c6fd?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Shakes" loading="lazy"/>
+      <div class="gi-label">Fresh Shakes</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CONTACT ═══ -->
+<section id="contact">
+  <div class="contact-inner max-w">
+    <div class="reveal-left">
+      <span class="section-label">Find Us</span>
+      <h2 class="section-title">Visit or Order<br>— We're Ready</h2>
+      <div class="divider"></div>
+      <div class="contact-info-card">
+        <div class="info-row">
+          <div class="info-icon">📍</div>
+          <div>
+            <div class="info-label">Address</div>
+            <div class="info-value">Street No. 1, Main Gulberg Rd<br>Gobindpura, Faisalabad 38000</div>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-icon">📞</div>
+          <div>
+            <div class="info-label">WhatsApp / Call</div>
+            <div class="info-value">0303 2616111</div>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-icon">🕐</div>
+          <div>
+            <div class="info-label">Opening Hours</div>
+            <div class="info-value">Mon – Thu &nbsp; 12:00 PM – 12:00 AM<br>Fri – Sat &nbsp;&nbsp; 12:00 PM – 1:00 AM<br>Sunday &nbsp;&nbsp;&nbsp; 1:00 PM – 12:00 AM</div>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-icon">🏷️</div>
+          <div>
+            <div class="info-label">Specialties</div>
+            <div class="info-value">BBQ · Desi · Burgers · Pizza · Fast Food · Drinks · Desserts</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="reveal-right">
+      <p class="section-subtitle" style="margin-bottom:1.8rem;">Craving something? Tap below to place your order directly on WhatsApp — we respond fast and deliver with care.</p>
+      <a href="https://wa.me/923032616111?text=Hi! I'd like to place an order from Sober Cuisine" target="_blank" rel="noopener" class="whatsapp-btn-main">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+        Chat on WhatsApp
+      </a>
+      <div class="map-placeholder" style="cursor:pointer;" onclick="window.open('https://maps.google.com/?q=Sober+Cuisine+Gobindpura+Faisalabad','_blank')">
+        <div style="font-size:2rem;">🗺️</div>
+        <div>Street No. 1, Main Gulberg Rd, Faisalabad</div>
+        <div style="color:var(--accent);font-size:.8rem;font-weight:600;">Open in Google Maps →</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="footer-logo">Sober<span> Cuisine</span></div>
+  <p class="footer-copy">&copy; 2025 Sober Cuisine. All rights reserved.</p>
+  <ul class="footer-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</footer>
+
+<!-- ═══ FLOATING WHATSAPP ═══ -->
+<a id="wa-float" href="https://wa.me/923032616111?text=Hi! I'd like to order from Sober Cuisine" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+  <svg viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+</a>
+
+<script>
+  /* ── NAVBAR ── */
+  const navbar    = document.getElementById('navbar');
+  const navToggle = document.getElementById('navToggle');
+  const navLinks  = document.getElementById('navLinks');
+  window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 40), {passive:true});
+  let navJustOpened = false;
+  navToggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const open = navLinks.classList.toggle('open');
+    navToggle.classList.toggle('open', open);
+    navToggle.setAttribute('aria-expanded', open);
+    if(open){ navJustOpened = true; setTimeout(()=>{ navJustOpened = false; }, 10); }
+  });
+  function closeNav(){ navLinks.classList.remove('open'); navToggle.classList.remove('open'); navToggle.setAttribute('aria-expanded',false); }
+  document.addEventListener('click', (e) => {
+    if(navJustOpened) return;
+    if(navLinks.classList.contains('open') && !navLinks.contains(e.target) && !navToggle.contains(e.target)){
+      closeNav();
+    }
+  });
+
+  /* ── MENU TABS ── */
+  document.querySelectorAll('.menu-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.menu-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.menu-category').forEach(c => c.classList.remove('active'));
+      tab.classList.add('active');
+      const cat = document.getElementById('cat-' + tab.dataset.cat);
+      if(cat){ cat.classList.add('active'); }
+      // re-trigger reveal for newly visible cards
+      cat.querySelectorAll('.reveal').forEach(el => {
+        if(!el.classList.contains('visible')){ observer.observe(el); }
+      });
+    });
+  });
+
+  /* ── SCROLL REVEAL ── */
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){ entry.target.classList.add('visible'); observer.unobserve(entry.target); }
+    });
+  }, {threshold: 0.1});
+  document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach((el,i) => {
+    el.style.transitionDelay = `${(i % 5) * 0.07}s`;
+    observer.observe(el);
+  });
+
+  /* ── HERO BG LAZY ── */
+  const heroBg = document.getElementById('hero-bg');
+  const img = new Image();
+  img.src = 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=1600&q=80';
+  img.onload = () => {
+    heroBg.style.backgroundImage = `url('${img.src}')`;
+    heroBg.classList.add('loaded');
+  };
+
+  /* ── EMBERS ── */
+  const hero = document.getElementById('hero');
+  function spawnEmber(){
+    const e = document.createElement('div');
+    e.className = 'ember';
+    const s = Math.random()*5+2;
+    e.style.cssText = `width:${s}px;height:${s}px;left:${Math.random()*100}%;bottom:0;animation-duration:${Math.random()*5+5}s;animation-delay:${Math.random()*2}s;`;
+    hero.appendChild(e);
+    setTimeout(() => e.remove(), 11000);
+  }
+  setInterval(spawnEmber, 700);
+  for(let i=0;i<8;i++) spawnEmber();
+  
+</script>
+</body>
+</html>
